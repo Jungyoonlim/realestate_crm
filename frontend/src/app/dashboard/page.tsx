@@ -1,4 +1,5 @@
 "use client"
+
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
@@ -10,8 +11,52 @@ import { Property } from '@/types/property';
 import Link from "next/link"
 
 export default function Dashboard() {
-  const [properties, setProperties] = useState<Property[]>([]);
+    const properties: Property[] = [
+        {
+          id: 1,
+          address: "Apgujeong-dong",
+          description: "Luxury apartment",
+          title: "Luxurious Apartment in Apgujeong-dong",
+          price: 1000000,
+          bedrooms: 3,
+          bathrooms: 2,
+          pyeong: 85, // Example size in pyeong
+          created_at: '2024-01-01T12:00:00Z', // Example creation date
+        },
+        {
+          id: 2,
+          address: "Hyehwa-dong",
+          description: "Cozy studio near university",
+          title: "Cozy Studio in Hyehwa-dong",
+          price: 500000,
+          bedrooms: 1,
+          bathrooms: 1,
+          pyeong: 30, // Example size in pyeong
+          created_at: '2024-02-01T12:00:00Z', // Example creation date
+        },
+        {
+          id: 3,
+          address: "Gahoe-dong",
+          description: "Traditional hanok house",
+          title: "Traditional Hanok House in Gahoe-dong",
+          price: 2000000,
+          bedrooms: 4,
+          bathrooms: 3,
+          pyeong: 120, // Example size in pyeong
+          created_at: '2024-03-01T12:00:00Z', // Example creation date
+        },
+      ];
+      
+      
+
+  const [editingProperty, setEditingProperty] = useState<Property | null>(null); 
+  const handleEditProperty = (property: Property) => {
+    setEditingProperty
+  }
+
+
   const [isOwner, setIsOwner] = useState(false);
+  const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -23,10 +68,10 @@ export default function Dashboard() {
           const propertiesResponse = await axios.get('/api/properties/my_properties');
           setProperties(propertiesResponse.data);
         } else {
-          // Fetch tenant's property
+          // Fetch tenant's properties
           const tenantResponse = await axios.get('/api/tenants/me');
-          if (tenantResponse.data.property) {
-            setProperties([tenantResponse.data.property]);
+          if (tenantResponse.data.properties) {
+            setProperties(tenantResponse.data.properties);
           }
         }
       } catch (error) {
@@ -36,6 +81,10 @@ export default function Dashboard() {
 
     fetchData();
   }, []);
+
+  const handlePropertyClick = (property: Property) => {
+    setSelectedProperty(property);
+  };
 
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
@@ -143,13 +192,13 @@ export default function Dashboard() {
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             <Card>
               <CardHeader>
-                <CardTitle>{isOwner ? "Property Overview" : "My Rental"}</CardTitle>
+                <CardTitle>{isOwner ? "Property Overview" : "My Rentals"}</CardTitle>
                 <CardDescription>{isOwner ? "Manage your properties" : "View your rental details"}</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="grid gap-4">
                   {properties.map((property) => (
-                    <div key={property.id} className="flex items-center justify-between">
+                    <div key={property.id} className="flex items-center justify-between cursor-pointer" onClick={() => handlePropertyClick(property)}>
                       <div>
                         <div className="text-sm font-medium">{property.address}</div>
                         <div className="text-muted-foreground">{property.description}</div>
@@ -160,6 +209,33 @@ export default function Dashboard() {
                 </div>
               </CardContent>
             </Card>
+            {selectedProperty && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Selected Rental Details</CardTitle>
+                  <CardDescription>{selectedProperty.address}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid gap-2">
+                    <div>
+                      <span className="font-medium">Price:</span> ${selectedProperty.price}
+                    </div>
+                    <div>
+                      <span className="font-medium">Bedrooms:</span> {selectedProperty.bedrooms}
+                    </div>
+                    <div>
+                      <span className="font-medium">Bathrooms:</span> {selectedProperty.bathrooms}
+                    </div>
+                    <div>
+                      <span className="font-medium">Size:</span> {selectedProperty.pyeong} pyeong
+                    </div>
+                    <div>
+                      <span className="font-medium">Description:</span> {selectedProperty.description}
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
             {isOwner && (
               <Card>
                 <CardHeader>
