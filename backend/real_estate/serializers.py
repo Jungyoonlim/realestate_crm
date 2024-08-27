@@ -16,3 +16,8 @@ class CustomerSerializer(serializers.ModelSerializer):
         model = Customer
         fields = ['id', 'name', 'phone_number', 'email', 'interested_property', 'notes', 'created_at', 'updated_at']
 
+class MessageSerializer():
+    pass
+
+class SubscriptionSerializer():
+    pass 

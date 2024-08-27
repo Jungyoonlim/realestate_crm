@@ -1,4 +1,31 @@
 from django.contrib import admin
-from .models import Property
+from .models import Property, Owner, Customer, Message, Subscription
 
-admin.site.register(Property)
+@admin.register(Property)
+class PropertyAdmin(admin.ModelAdmin):
+    list_display = ('property_type', 'address', 'size_in_pyeong', 'price_in_won', 'owner')
+    list_filter = ('property_type', 'owner')
+    search_fields = ('address', 'description')
+
+@admin.register(Owner)
+class OwnerAdmin(admin.ModelAdmin):
+    list_display = ('user', 'phone_number', 'address')
+    search_fields = ('user__username', 'phone_number', 'address')
+
+@admin.register(Customer)
+class CustomerAdmin(admin.ModelAdmin):
+    list_display = ('name', 'phone_number', 'email', 'interested_property')
+    list_filter = ('interested_property',)
+    search_fields = ('name', 'phone_number', 'email')
+
+@admin.register(Message)
+class MessageAdmin(admin.ModelAdmin):
+    list_display = ('sender', 'receiver', 'timestamp')
+    list_filter = ('sender', 'receiver')
+    search_fields = ('content',)
+
+@admin.register(Subscription)
+class SubscriptionAdmin(admin.ModelAdmin):
+    list_display = ('user', 'active', 'subscription_type', 'expiration_date')
+    list_filter = ('active', 'subscription_type')
+    search_fields = ('user__username', 'stripe_customer_id')
