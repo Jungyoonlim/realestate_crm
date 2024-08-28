@@ -22,6 +22,7 @@ import { useRouter } from 'next/navigation'
 import axios from 'axios'
 import { Property } from '@/types/property'
 import Link from "next/link"
+import CRMMessaging from './CRMMessaging'
 
 export default function Dashboard() {
   const router = useRouter()
@@ -69,6 +70,8 @@ export default function Dashboard() {
 
   const [isOwner, setIsOwner] = useState(false)
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null)
+  const [showCRMMessaging, setShowCRMMessaging] = useState(false)
+  const [activeTab, setActiveTab] = useState('dashboard')
 
   useEffect(() => {
     const fetchData = async () => {
@@ -98,6 +101,11 @@ export default function Dashboard() {
     setSelectedProperty(property)
   }
 
+  const handleTabClick = (tab: string) => {
+    setActiveTab(tab)
+    setShowCRMMessaging(tab === 'tenants')
+  }
+
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
       <header className="sticky top-0 z-30 flex flex-col bg-background px-6 py-4">
@@ -107,7 +115,12 @@ export default function Dashboard() {
             <Link href="#" className="text-muted-foreground hover:text-foreground" prefetch={false}>
               Properties
             </Link>
-            <Link href="#" className="text-muted-foreground hover:text-foreground" prefetch={false}>
+            <Link 
+                href="#" 
+                className="text-muted-foreground hover:text-foreground" 
+                prefetch={false}
+                onClick={() => handleTabClick('tenants')}
+            >
               Tenants
             </Link>
             <Link href="#" className="text-muted-foreground hover:text-foreground" prefetch={false}>
@@ -271,6 +284,7 @@ export default function Dashboard() {
             </Card>
           </div>
         </div>
+        {showCRMMessaging && <CRMMessaging />}
       </div>
     </div>
   )
@@ -386,7 +400,7 @@ function WrenchIcon(props: React.SVGProps<SVGSVGElement>) {
   )
 }
 
-function ThermometerIcon(props: React.SVGProps<SVGSVGElement>) {
+function ThermometerIcon(props: React.SVGProps<SVGSVGElement>) {3
   return (
     <svg
       {...props}
