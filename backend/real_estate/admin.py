@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Property, Owner, Customer, Message, Subscription
+from .models import Property, Owner, Tenant, Message, Subscription
 
 @admin.register(Property)
 class PropertyAdmin(admin.ModelAdmin):
@@ -12,8 +12,8 @@ class OwnerAdmin(admin.ModelAdmin):
     list_display = ('user', 'phone_number', 'address')
     search_fields = ('user__username', 'phone_number', 'address')
 
-@admin.register(Customer)
-class CustomerAdmin(admin.ModelAdmin):
+@admin.register(Tenant)
+class TenantAdmin(admin.ModelAdmin):
     list_display = ('name', 'phone_number', 'email', 'interested_property')
     list_filter = ('interested_property',)
     search_fields = ('name', 'phone_number', 'email')

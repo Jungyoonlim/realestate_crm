@@ -28,7 +28,7 @@ class Property(models.Model):
     def __str__(self):
         return f"{self.get_property_type_display() or 'Unspecified'} at {self.address}"
     
-class Customer(models.Model):
+class Tenant(models.Model):
     name = models.CharField(max_length=100)
     phone_number = models.CharField(max_length=20)
     email = models.EmailField()
