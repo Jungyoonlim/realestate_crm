@@ -3,131 +3,121 @@
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuItem } from "@/components/ui/dropdown-menu"
-import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip"
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import { Property } from '@/types/property';
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuItem
+} from "@/components/ui/dropdown-menu"
+import {
+  TooltipProvider,
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent
+} from "@/components/ui/tooltip"
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+import axios from 'axios'
+import { Property } from '@/types/property'
 import Link from "next/link"
 
 export default function Dashboard() {
-    const properties: Property[] = [
-        {
-          id: 1,
-          address: "Apgujeong-dong",
-          description: "Luxury apartment",
-          title: "Luxurious Apartment in Apgujeong-dong",
-          price: 1000000,
-          bedrooms: 3,
-          bathrooms: 2,
-          pyeong: 85, // Example size in pyeong
-          created_at: '2024-01-01T12:00:00Z', // Example creation date
-        },
-        {
-          id: 2,
-          address: "Hyehwa-dong",
-          description: "Cozy studio near university",
-          title: "Cozy Studio in Hyehwa-dong",
-          price: 500000,
-          bedrooms: 1,
-          bathrooms: 1,
-          pyeong: 30, // Example size in pyeong
-          created_at: '2024-02-01T12:00:00Z', // Example creation date
-        },
-        {
-          id: 3,
-          address: "Gahoe-dong",
-          description: "Traditional hanok house",
-          title: "Traditional Hanok House in Gahoe-dong",
-          price: 2000000,
-          bedrooms: 4,
-          bathrooms: 3,
-          pyeong: 120, // Example size in pyeong
-          created_at: '2024-03-01T12:00:00Z', // Example creation date
-        },
-      ];
-      
-      
+  const router = useRouter()
 
-  const [editingProperty, setEditingProperty] = useState<Property | null>(null); 
+  const properties: Property[] = [
+    {
+      id: 1,
+      address: "Apgujeong-dong",
+      description: "Luxury apartment",
+      title: "Luxurious Apartment in Apgujeong-dong",
+      price: 1000000,
+      bedrooms: 3,
+      bathrooms: 2,
+      pyeong: 85,
+      created_at: '2024-01-01T12:00:00Z',
+    },
+    {
+      id: 2,
+      address: "Hyehwa-dong",
+      description: "Cozy studio near university",
+      title: "Cozy Studio in Hyehwa-dong",
+      price: 500000,
+      bedrooms: 1,
+      bathrooms: 1,
+      pyeong: 30,
+      created_at: '2024-02-01T12:00:00Z',
+    },
+    {
+      id: 3,
+      address: "Gahoe-dong",
+      description: "Traditional hanok house",
+      title: "Traditional Hanok House in Gahoe-dong",
+      price: 2000000,
+      bedrooms: 4,
+      bathrooms: 3,
+      pyeong: 120,
+      created_at: '2024-03-01T12:00:00Z',
+    },
+  ]
+
+  const [editingProperty, setEditingProperty] = useState<Property | null>(null)
   const handleEditProperty = (property: Property) => {
-    setEditingProperty
+    setEditingProperty(property)
   }
 
-
-  const [isOwner, setIsOwner] = useState(false);
-  const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
+  const [isOwner, setIsOwner] = useState(false)
+  const [selectedProperty, setSelectedProperty] = useState<Property | null>(null)
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const userResponse = await axios.get('/api/users/me');
-        setIsOwner(userResponse.data.is_owner);
+        const userResponse = await axios.get('/api/users/me')
+        setIsOwner(userResponse.data.is_owner)
 
         if (userResponse.data.is_owner) {
-          const propertiesResponse = await axios.get('/api/properties/my_properties');
-          setProperties(propertiesResponse.data);
+          const propertiesResponse = await axios.get('/api/properties/my_properties')
+          setProperties(propertiesResponse.data)
         } else {
           // Fetch tenant's properties
-          const tenantResponse = await axios.get('/api/tenants/me');
+          const tenantResponse = await axios.get('/api/tenants/me')
           if (tenantResponse.data.properties) {
-            setProperties(tenantResponse.data.properties);
+            setProperties(tenantResponse.data.properties)
           }
         }
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('Error fetching data:', error)
       }
-    };
+    }
 
-    fetchData();
-  }, []);
+    fetchData()
+  }, [])
 
   const handlePropertyClick = (property: Property) => {
-    setSelectedProperty(property);
-  };
+    setSelectedProperty(property)
+  }
 
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
-      <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
-        <Link href="#" className="flex items-center gap-2" prefetch={false}>
-          <HomeIcon className="h-6 w-6" />
-          <span className="text-lg font-bold">Real Estate Dashboard</span>
-        </Link>
-        <nav className="ml-auto flex items-center gap-4">
-          <Link href="#" className="text-muted-foreground hover:text-foreground" prefetch={false}>
-            Properties
-          </Link>
-          <Link href="#" className="text-muted-foreground hover:text-foreground" prefetch={false}>
-            Tenants
-          </Link>
-          <Link href="#" className="text-muted-foreground hover:text-foreground" prefetch={false}>
-            Maintenance
-          </Link>
-          <Link href="#" className="text-muted-foreground hover:text-foreground" prefetch={false}>
-            Settings
-          </Link>
-        </nav>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="icon" className="overflow-hidden rounded-full border-2 border-primary">
-              <img
-                src="/placeholder.svg"
-                width={36}
-                height={36}
-                alt="Avatar"
-                className="h-full w-full object-cover"
-              />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>{isOwner ? "Property Owner" : "Tenant"}</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Profile</DropdownMenuItem>
-            <DropdownMenuItem>Settings</DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Logout</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+      <header className="sticky top-0 z-30 flex flex-col bg-background px-6 py-4">
+        <div className="flex justify-between items-center">
+          <h2 className="text-2xl font-bold tracking-tight text-foreground">Real Estate Dashboard</h2>
+          <nav className="flex items-center gap-4">
+            <Link href="#" className="text-muted-foreground hover:text-foreground" prefetch={false}>
+              Properties
+            </Link>
+            <Link href="#" className="text-muted-foreground hover:text-foreground" prefetch={false}>
+              Tenants
+            </Link>
+            <Link href="#" className="text-muted-foreground hover:text-foreground" prefetch={false}>
+              Maintenance
+            </Link>
+            <Link href="#" className="text-muted-foreground hover:text-foreground" prefetch={false}>
+              Settings
+            </Link>
+          </nav>
+        </div>
       </header>
       <div className="flex flex-1 gap-4 p-4 sm:px-6 sm:py-4">
         <aside className="hidden w-14 flex-col border-r bg-background sm:flex">
