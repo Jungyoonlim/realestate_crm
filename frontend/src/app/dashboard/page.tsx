@@ -81,12 +81,12 @@ export default function Dashboard() {
 
         if (userResponse.data.is_owner) {
           const propertiesResponse = await axios.get('/api/properties/my_properties')
-          setProperties(propertiesResponse.data)
+          setSelectedProperty(propertiesResponse.data)
         } else {
           // Fetch tenant's properties
           const tenantResponse = await axios.get('/api/tenants/me')
           if (tenantResponse.data.properties) {
-            setProperties(tenantResponse.data.properties)
+            setSelectedProperty(tenantResponse.data.properties)
           }
         }
       } catch (error) {
