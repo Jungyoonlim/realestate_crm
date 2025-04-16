@@ -16,12 +16,41 @@ class Property(models.Model):
         ('OFFICE', 'Office Building'),
         ('RETAIL', 'Retail Space'),
     )
-    owner = models.ForeignKey(Owner, on_delete=models.SET_NULL, related_name='properties', null=True, blank=True)
-    property_type = models.CharField(max_length=20, choices=PROPERTY_TYPES, null=True, blank=True)  # Changed this line
-    address = models.TextField()
-    size_in_pyeong = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
-    price_in_won = models.DecimalField(max_digits=15, decimal_places=0, null=True, blank=True)
+
+    TRANSACTION_TYPES = [
+        ('SALE', '매매'),
+        ('JEONSE', '전세'),
+        ('MONTHLY', '월세'),
+    ]
+
+    STATUS_CHOICES = [
+        ('AVAILABLE', '매물'),
+        ('PENDING', '계약중'),
+        ('SOLD', '거래완료'),
+    ]
+
+
+    title = models.CharField(max_length=200)
+    property_type = models.CharField(max_length=20, choices=PROPERTY_TYPES)
+    transaction_type = models.CharField(max_length=20, choices=TRANSACTION_TYPES)
+    address = models.CharField(max_length=255)
+    dong = models.CharField(max_length=100)
+    district = models.CharField(max_length=100)
+    city = models.CharField(max_length=100)
+    price_in_won = models.BigIntegerField()
+    deposit_in_won = models.BigIntegerField(null=True, blank=True)
+    monthly_rent_in_won = models.IntegerField(null=True, blank=True)
+    maintenance_fee = models.IntegerField(null=True, blank=True)
+    size_m2 = models.DecimalField(max_digits=10, decimal_places=2)
+    size_pyeong = models.DecimalField(max_digits=10, decimal_places=2)
+    rooms = models.IntegerField()
+    bathrooms = models.IntegerField()
+    floor = models.IntegerField()
+    total_floors = models.IntegerField()
+    building_name = models.CharField(max_length=100, blank=True)
+    building_year = models.IntegerField()
     description = models.TextField()
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='AVAILABLE')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

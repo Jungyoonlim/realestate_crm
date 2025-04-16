@@ -23,45 +23,14 @@ import axios from 'axios'
 import { Property } from '@/types/property'
 import Link from "next/link"
 import CRMMessaging from './CRMMessaging'
+import PropertyCard from '@/components/PropertyCard'
 
 export default function Dashboard() {
   const router = useRouter()
 
-  const properties: Property[] = [
-    {
-      id: 1,
-      address: "Apgujeong-dong",
-      description: "Luxury apartment",
-      title: "Luxurious Apartment in Apgujeong-dong",
-      price: 1000000,
-      bedrooms: 3,
-      bathrooms: 2,
-      pyeong: 85,
-      created_at: '2024-01-01T12:00:00Z',
-    },
-    {
-      id: 2,
-      address: "Hyehwa-dong",
-      description: "Cozy studio near university",
-      title: "Cozy Studio in Hyehwa-dong",
-      price: 500000,
-      bedrooms: 1,
-      bathrooms: 1,
-      pyeong: 30,
-      created_at: '2024-02-01T12:00:00Z',
-    },
-    {
-      id: 3,
-      address: "Gahoe-dong",
-      description: "Traditional hanok house",
-      title: "Traditional Hanok House in Gahoe-dong",
-      price: 2000000,
-      bedrooms: 4,
-      bathrooms: 3,
-      pyeong: 120,
-      created_at: '2024-03-01T12:00:00Z',
-    },
-  ]
+  const [properties, setProperties] = useState<Property[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   const [editingProperty, setEditingProperty] = useState<Property | null>(null)
   const handleEditProperty = (property: Property) => {
@@ -97,6 +66,25 @@ export default function Dashboard() {
     fetchData()
   }, [])
 
+  useEffect(() => {
+    const fetchProperties = async () => {
+      try {
+        const response = await fetch('http://localhost:8000/api/properties/')
+        if (!response.ok) {
+          throw new Error('Failed to fetch properties')
+        }
+        const data = await response.json()
+        setProperties(data)
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to fetch properties')
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchProperties()
+  }, [])
+
   const handlePropertyClick = (property: Property) => {
     setSelectedProperty(property)
   }
@@ -104,6 +92,30 @@ export default function Dashboard() {
   const handleTabClick = (tab: string) => {
     setActiveTab(tab)
     setShowCRMMessaging(tab === 'tenants')
+  }
+
+  const formatPrice = (price: number) => {
+    return new Intl.NumberFormat('ko-KR', {
+      style: 'currency',
+      currency: 'KRW',
+      maximumFractionDigits: 0
+    }).format(price)
+  }
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="text-red-500">Error: {error}</div>
+      </div>
+    )
   }
 
   return (
@@ -193,95 +205,60 @@ export default function Dashboard() {
         </aside>
         <div className="flex-1 space-y-4">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            <Card>
-              <CardHeader>
-                <CardTitle>{isOwner ? "Property Overview" : "My Rentals"}</CardTitle>
-                <CardDescription>{isOwner ? "Manage your properties" : "View your rental details"}</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="grid gap-4">
-                  {properties.map((property) => (
-                    <div key={property.id} className="flex items-center justify-between cursor-pointer" onClick={() => handlePropertyClick(property)}>
-                      <div>
-                        <div className="text-sm font-medium">{property.address}</div>
-                        <div className="text-muted-foreground">{property.description}</div>
+            {properties.map((property) => (
+              <div key={property.id} className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="p-6">
+                  <h2 className="text-xl font-semibold mb-2">{property.title}</h2>
+                  <p className="text-gray-600 mb-4">{property.address}</p>
+                  
+                  <div className="space-y-2">
+                    <div className="flex justify-between">
+                      <span className="text-gray-500">가격</span>
+                      <span className="font-semibold">
+                        {property.transaction_type === 'MONTHLY' 
+                          ? `월세 ${formatPrice(property.monthly_rent_in_won || 0)}`
+                          : formatPrice(property.price_in_won)}
+                      </span>
+                    </div>
+
+                    <div className="flex justify-between">
+                      <span className="text-gray-500">면적</span>
+                      <span>{property.size_pyeong}평 ({property.size_m2}㎡)</span>
+                    </div>
+
+                    <div className="flex justify-between">
+                      <span className="text-gray-500">방/화장실</span>
+                      <span>{property.rooms}개/{property.bathrooms}개</span>
+                    </div>
+
+                    <div className="flex justify-between">
+                      <span className="text-gray-500">층수</span>
+                      <span>{property.floor}층/{property.total_floors}층</span>
+                    </div>
+
+                    {property.maintenance_fee && (
+                      <div className="flex justify-between">
+                        <span className="text-gray-500">관리비</span>
+                        <span>{formatPrice(property.maintenance_fee)}/월</span>
                       </div>
-                      <HomeIcon className="h-6 w-6 text-muted-foreground" />
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-            {selectedProperty && (
-              <Card>
-                <CardHeader>
-                  <CardTitle>Selected Rental Details</CardTitle>
-                  <CardDescription>{selectedProperty.address}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid gap-2">
-                    <div>
-                      <span className="font-medium">Price:</span> ${selectedProperty.price}
-                    </div>
-                    <div>
-                      <span className="font-medium">Bedrooms:</span> {selectedProperty.bedrooms}
-                    </div>
-                    <div>
-                      <span className="font-medium">Bathrooms:</span> {selectedProperty.bathrooms}
-                    </div>
-                    <div>
-                      <span className="font-medium">Size:</span> {selectedProperty.pyeong} pyeong
-                    </div>
-                    <div>
-                      <span className="font-medium">Description:</span> {selectedProperty.description}
-                    </div>
+                    )}
                   </div>
-                </CardContent>
-              </Card>
-            )}
-            {isOwner && (
-              <Card>
-                <CardHeader>
-                  <CardTitle>Occupancy Rate</CardTitle>
-                  <CardDescription>Current occupancy across all properties</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid gap-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <div className="text-sm font-medium">Overall Occupancy</div>
-                        <div className="text-muted-foreground">85%</div>
-                      </div>
-                      <Progress value={85} aria-label="Overall Occupancy" />
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-            <Card>
-              <CardHeader>
-                <CardTitle>Maintenance Requests</CardTitle>
-                <CardDescription>Recent maintenance issues</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="grid gap-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <div className="text-sm font-medium">Plumbing Issue</div>
-                      <div className="text-muted-foreground">Reported on June 15, 2023</div>
-                    </div>
-                    <WrenchIcon className="h-6 w-6 text-muted-foreground" />
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <div className="text-sm font-medium">HVAC Maintenance</div>
-                      <div className="text-muted-foreground">Scheduled for July 1, 2023</div>
-                    </div>
-                    <ThermometerIcon className="h-6 w-6 text-muted-foreground" />
+
+                  <p className="mt-4 text-gray-600 text-sm line-clamp-2">
+                    {property.description}
+                  </p>
+
+                  <div className="mt-4 flex justify-between text-sm">
+                    <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded">
+                      {property.property_type}
+                    </span>
+                    <span className="px-2 py-1 bg-green-100 text-green-800 rounded">
+                      {property.transaction_type}
+                    </span>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            ))}
           </div>
         </div>
         {showCRMMessaging && <CRMMessaging />}

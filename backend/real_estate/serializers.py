@@ -9,7 +9,32 @@ class OwnerSerializer(serializers.ModelSerializer):
 class PropertySerializer(serializers.ModelSerializer):
     class Meta:
         model = Property
-        fields = ['id', 'property_type', 'address', 'size_in_pyeong', 'price_in_won', 'description', 'created_at', 'updated_at', 'owner']
+        fields = [
+            'id',
+            'title',
+            'property_type',
+            'transaction_type',
+            'address',
+            'dong',
+            'district',
+            'city',
+            'price_in_won',
+            'deposit_in_won',
+            'monthly_rent_in_won',
+            'maintenance_fee',
+            'size_m2',
+            'size_pyeong',
+            'rooms',
+            'bathrooms',
+            'floor',
+            'total_floors',
+            'building_name',
+            'building_year',
+            'description',
+            'status',
+            'created_at',
+            'updated_at'
+        ]
 
 class TenantSerializer(serializers.ModelSerializer):
     class Meta:
