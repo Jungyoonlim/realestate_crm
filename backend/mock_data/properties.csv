@@ -1,0 +1,26 @@
+id,title,property_type,transaction_type,address,dong,district,city,price_in_won,deposit_in_won,monthly_rent_in_won,maintenance_fee,size_m2,size_pyeong,rooms,bathrooms,floor,total_floors,building_name,building_year,description,status
+1,"Modern Apartment in Gangnam",APARTMENT,SALE,"강남대로 123",역삼동,강남구,서울특별시,1250000000,0,0,150000,84.3,25.5,3,2,15,25,역삼푸르지오,2018,"남향 고층 아파트, 역세권, 신축급 컨디션",AVAILABLE
+2,"Cozy Studio in Hongdae",OFFICETEL,MONTHLY,"와우산로 45",상수동,마포구,서울특별시,0,20000000,1200000,80000,33.1,10,1,1,8,12,상수역스카이,2020,"홍대입구역 도보 5분, 풀옵션",AVAILABLE
+3,"Luxury Penthouse",APARTMENT,SALE,"청담동 123",청담동,강남구,서울특별시,3500000000,0,0,500000,165.2,50,4,3,23,23,청담파크빌,2015,"펜트하우스, 한강뷰, 테라스",AVAILABLE
+4,"Commercial Space in Gangnam",COMMERCIAL,SALE,"테헤란로 159",역삼동,강남구,서울특별시,2800000000,0,0,200000,132.2,40,0,2,1,20,강남N타워,2017,"역세권 상가, 고수익 임대중",AVAILABLE
+5,"Traditional House",HOUSE,SALE,"북촌로 11길",가회동,종로구,서울특별시,980000000,0,0,0,132.2,40,3,2,2,2,0,1965,"한옥, 마당있음, 전통미",AVAILABLE
+6,"Modern Villa",VILLA,JEONSE,"연희로 45",연희동,서대문구,서울특별시,0,350000000,0,100000,99.2,30,3,2,3,4,연희빌라,2019,"신축빌라, 주차가능, 테라스",AVAILABLE
+7,"Office Space",COMMERCIAL,MONTHLY,"강남대로 369",역삼동,강남구,서울특별시,0,100000000,5000000,300000,165.2,50,0,4,18,30,강남센터,2016,"프라임급 오피스, 24시간 보안",AVAILABLE
+8,"River View Apartment",APARTMENT,SALE,"반포대로 235",반포동,서초구,서울특별시,2900000000,0,0,250000,132.2,40,4,2,12,25,반포자이,2012,"한강뷰, 수변공원",AVAILABLE
+9,"Cozy Officetel",OFFICETEL,JEONSE,"서교동 458",서교동,마포구,서울특별시,0,200000000,0,80000,46.2,14,1,1,7,15,서교오피스텔,2018,"홍대역세권, 풀옵션",AVAILABLE
+10,"Family Apartment",APARTMENT,SALE,"잠실로 123",잠실동,송파구,서울특별시,1850000000,0,0,150000,114.5,34.6,4,2,8,20,잠실엘스,2010,"학군좋음, 편의시설 우수",AVAILABLE
+11,"Retail Space",COMMERCIAL,MONTHLY,"가로수길 45",신사동,강남구,서울특별시,0,150000000,8000000,200000,99.2,30,0,1,1,5,신사스퀘어,2021,"가로수길 중심상권, 고통행량",AVAILABLE
+12,"Modern House",HOUSE,SALE,"성북동길 78",성북동,성북구,서울특별시,1350000000,0,0,0,198.3,60,4,3,2,2,0,2020,"정원있는 단독주택, 도시전망",AVAILABLE
+13,"Studio Apartment",OFFICETEL,MONTHLY,"역삼로 159",역삼동,강남구,서울특별시,0,30000000,1500000,100000,33.1,10,1,1,10,18,역삼SK뷰,2019,"역세권, 신축급 원룸",AVAILABLE
+14,"Luxury Villa",VILLA,SALE,"평창동길 36",평창동,종로구,서울특별시,2200000000,0,0,150000,198.3,60,4,3,3,3,평창힐스,2017,"고급빌라, 전망좋음",AVAILABLE
+15,"Office Building",COMMERCIAL,SALE,"테헤란로 789",대치동,강남구,서울특별시,5500000000,0,0,500000,330.6,100,0,6,15,15,대치타워,2015,"단독빌딩, 수익률 우수",AVAILABLE
+16,"Riverside Apartment",APARTMENT,JEONSE,"압구정로 456",압구정동,강남구,서울특별시,0,800000000,0,200000,132.2,40,3,2,15,30,압구정자이,2014,"한강뷰, 럭셔리단지",AVAILABLE
+17,"Shop Space",COMMERCIAL,MONTHLY,"명동길 23",명동,중구,서울특별시,0,100000000,6000000,150000,66.1,20,0,1,2,10,명동프라자,2010,"명동 중심상권, 1층점포",AVAILABLE
+18,"Garden House",HOUSE,SALE,"부암동길 45",부암동,종로구,서울특별시,1650000000,0,0,0,231.4,70,5,3,2,2,0,2018,"정원, 테라스, 전망우수",AVAILABLE
+19,"Small Office",COMMERCIAL,JEONSE,"논현로 147",논현동,강남구,서울특별시,0,300000000,0,150000,82.6,25,0,2,5,10,논현빌딩,2016,"소규모 사무실, 역세권",AVAILABLE
+20,"New Apartment",APARTMENT,SALE,"동탄반석로 123",반석동,화성시,경기도,650000000,0,0,120000,114.5,34.6,3,2,10,25,동탄자이,2022,"신축아파트, 교통편리",AVAILABLE
+21,"Studio Office",OFFICETEL,MONTHLY,"판교로 289",삼평동,성남시,경기도,0,40000000,1800000,120000,49.5,15,1,1,12,20,판교IT타워,2021,"판교역세권, 오피스텔",AVAILABLE
+22,"Large House",HOUSE,SALE,"분당구 수내로",수내동,성남시,경기도,1950000000,0,0,0,264.4,80,5,4,2,2,0,2019,"넓은정원, 고급주택가",AVAILABLE
+23,"Retail Shop",COMMERCIAL,JEONSE,"광명로 123",광명동,광명시,경기도,0,250000000,0,100000,82.6,25,0,1,1,5,광명프라자,2018,"역세권 상가, 집객우수",AVAILABLE
+24,"Lake View Apartment",APARTMENT,SALE,"일산로 456",장항동,고양시,경기도,720000000,0,0,130000,99.2,30,3,2,15,20,일산위브,2017,"호수공원뷰, 교통편리",AVAILABLE
+25,"Office Studio",OFFICETEL,MONTHLY,"부천로 159",중동,부천시,경기도,0,30000000,1300000,90000,42.9,13,1,1,8,15,부천센터,2020,"역세권, 신축급 원룸",AVAILABLE
