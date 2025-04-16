@@ -1,4 +1,4 @@
-#!/Users/jungyoonlim/weave/backend/venv/bin/python
+#!/Users/jungyoonlim/Projects/personal/realestate_crm/backend/venv/bin/python3.13
 # -*- coding: utf-8 -*-
 import re
 import sys

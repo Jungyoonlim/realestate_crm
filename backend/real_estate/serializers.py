@@ -9,7 +9,7 @@ class OwnerSerializer(serializers.ModelSerializer):
 class PropertySerializer(serializers.ModelSerializer):
     class Meta:
         model = Property
-        fields = ['id', 'owner', 'property_type', 'address', 'size_in_pyeong', 'price_in_won', 'description', 'created_at', 'updated_at']
+        fields = ['id', 'property_type', 'address', 'size_in_pyeong', 'price_in_won', 'description', 'created_at', 'updated_at', 'owner']
 
 class TenantSerializer(serializers.ModelSerializer):
     class Meta:
