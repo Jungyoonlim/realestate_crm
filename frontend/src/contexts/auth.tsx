@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, { createContext, useState, useContext } from 'react';
 
 type User = {
     id: string;
@@ -7,30 +7,34 @@ type User = {
 };
 
 type AuthContextType = {
-    user: User | null;
-    login: (username: string, password: string) => Promise<void>;
-    logout: () => void; 
+    user: User;  // Always defined, no null
+};
+
+// Default user with owner role
+const defaultUser: User = { 
+    id: '1', 
+    name: 'Default User', 
+    role: 'owner' 
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{children: React.ReactNode}> = ({ children }) => {
-    const [user, setUser] = useState<User | null>(null);
-
-    const login = async (username: string, password: string) => {
-        // mock login for now
-        if (username === 'owner' && password === 'password'){
-            setUser({ id: '1', name: 'Owner', role: 'owner' })
-        }
-    }
-
-    const logout = () => {
-        setUser(null);
-    }
+    // Always use the default user
+    const [user] = useState<User>(defaultUser);
 
     return (
-        <AuthContext.Provider value={{ user, login, logout }}>
+        <AuthContext.Provider value={{ user }}>
             {children}
         </AuthContext.Provider>
     );
+};
+
+// Hook to use auth context
+export const useAuth = () => {
+    const context = useContext(AuthContext);
+    if (context === undefined) {
+        throw new Error('useAuth must be used within an AuthProvider');
+    }
+    return context;
 }

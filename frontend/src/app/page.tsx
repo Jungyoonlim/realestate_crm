@@ -1,7 +1,21 @@
-import Link from 'next/link';
+// import Link from 'next/link';
+"use client";
+
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+
 
 export default function Home() {
-  return (
+  const router = useRouter();
+
+  useEffect(() => {
+    router.push("/dashboard");
+  }, [router]);
+}
+
+/**
+ * 
+ * return (
     <main className="flex min-h-screen flex-col items-center justify-center p-24">
       <h1 className="text-4xl font-bold mb-8">Real Estate CRM</h1>
       <div className="flex justify-center">
@@ -11,8 +25,7 @@ export default function Home() {
       </div>
     </main>
   );
-}
-
+ */
 
 /**
  * 
