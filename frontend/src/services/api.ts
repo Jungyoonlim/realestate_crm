@@ -5,11 +5,13 @@ interface LoginCredentials {
     password: string; 
 }
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
-
-const api = axios.create({
+export const api = axios.create({
     baseURL: API_URL,
+    headers: {
+        'Content-Type': 'application/json',
+    },
 });
 
 api.interceptors.request.use((config) => {
@@ -20,17 +22,34 @@ api.interceptors.request.use((config) => {
     return config; 
 });
 
+// Auth endpoints
 export const login = async (credentials: LoginCredentials) => {
     const response = await api.post('/users/login', credentials);
     return response.data; 
 }
 
-export const fetchProperties = async (params: Record<string, any>) => {
-    const response = await api.get('/properties', { params });
+// Property endpoints
+export const fetchProperties = async () => {
+    const response = await api.get('/properties/');
     return response.data; 
 };
 
-// Add more API methods
+export const fetchPropertyById = async (id: number) => {
+    const response = await api.get(`/properties/${id}/`);
+    return response.data;
+};
 
+export const createProperty = async (propertyData: any) => {
+    const response = await api.post('/properties/', propertyData);
+    return response.data;
+};
 
-export default api; 
+export const updateProperty = async (id: number, propertyData: any) => {
+    const response = await api.put(`/properties/${id}/`, propertyData);
+    return response.data;
+};
+
+export const deleteProperty = async (id: number) => {
+    const response = await api.delete(`/properties/${id}/`);
+    return response.data;
+}; 

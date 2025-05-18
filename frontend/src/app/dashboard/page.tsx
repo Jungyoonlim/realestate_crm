@@ -23,7 +23,7 @@ import axios from 'axios'
 import { Property } from '@/types/property'
 import Link from "next/link"
 import CRMMessaging from './CRMMessaging'
-import PropertyCard from '@/components/PropertyCard'
+import { api, fetchProperties } from '@/services/api'
 
 export default function Dashboard() {
   const router = useRouter()
@@ -45,15 +45,15 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const userResponse = await axios.get('/api/users/me')
+        const userResponse = await api.get('/users/me')
         setIsOwner(userResponse.data.is_owner)
 
         if (userResponse.data.is_owner) {
-          const propertiesResponse = await axios.get('/api/properties/my_properties')
+          const propertiesResponse = await api.get('/properties/my_properties')
           setSelectedProperty(propertiesResponse.data)
         } else {
           // Fetch tenant's properties
-          const tenantResponse = await axios.get('/api/tenants/me')
+          const tenantResponse = await api.get('/tenants/me')
           if (tenantResponse.data.properties) {
             setSelectedProperty(tenantResponse.data.properties)
           }
@@ -67,13 +67,10 @@ export default function Dashboard() {
   }, [])
 
   useEffect(() => {
-    const fetchProperties = async () => {
+    const loadProperties = async () => {
       try {
-        const response = await fetch('http://localhost:8000/api/properties/')
-        if (!response.ok) {
-          throw new Error('Failed to fetch properties')
-        }
-        const data = await response.json()
+        setLoading(true)
+        const data = await fetchProperties()
         setProperties(data)
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to fetch properties')
@@ -82,7 +79,7 @@ export default function Dashboard() {
       }
     }
 
-    fetchProperties()
+    loadProperties()
   }, [])
 
   const handlePropertyClick = (property: Property) => {

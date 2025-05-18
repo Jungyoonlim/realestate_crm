@@ -3,9 +3,9 @@ from .models import Property, Owner, Tenant, Message, Subscription
 
 @admin.register(Property)
 class PropertyAdmin(admin.ModelAdmin):
-    list_display = ('property_type', 'address', 'size_in_pyeong', 'price_in_won', 'owner')
-    list_filter = ('property_type', 'owner')
-    search_fields = ('address', 'description')
+    list_display = ('property_type', 'address', 'size_pyeong', 'price_in_won', 'status')
+    list_filter = ('property_type', 'transaction_type', 'status')
+    search_fields = ('address', 'description', 'title')
 
 @admin.register(Owner)
 class OwnerAdmin(admin.ModelAdmin):
